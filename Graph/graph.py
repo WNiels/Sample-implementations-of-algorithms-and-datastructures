@@ -1,62 +1,78 @@
 class Graph:
     def __init__(self, edges=[]):
-        print('init')
         self._edges = dict()
         self.add_edges(edges)
 
     @property
     def edges(self):
-        print('prop')
         return self._edges
 
     @edges.setter
     def edges(self, edges=[]):
-        print('setter')
         self._edges.clear()
         self.add_edges(edges)
 
     @edges.deleter
     def edges(self):
-        print('deleter')
         self._edges.clear()
 
     def add_edges(self, edges=[]):
-        print('add')
         for edge in edges:
-            print(edge)
             if edge[0] in self._edges:
-                self._edges[edge[0]] += [edge[1]]
+                self._edges[edge[0]].add(edge[1])
             else:
-                self._edges[edge[0]] = [edge[1]]
+                self._edges[edge[0]] = set([edge[1]])
 
     def get_adj(self, node=None):
-        if node is not None:
+        if node in self._edges:
             return self._edges[node]
-
-    def dfs(self, node=None, goal=None, visited=[]):
-        print('Aufruf')
-        yield node
-        if node is goal:
-            raise StopIteration
         else:
-            if node not in visited:
-                stack = self.get_adj(node)
-                print('Node '+str(node)+' :: '+str(stack))
-                while not len(stack) is 0:
-                    current = stack.pop()
-                    visited += [current]
-                    self.dfs(node=current, goal=goal, visited=visited)
+            return set()
 
-    def bfs(self):
-        pass
+    def dfs(self, start=None):
+        visited = set()
+        stack = [start]
+        while stack:
+            vertex = stack.pop()
+            yield vertex
+            if vertex not in visited:
+                visited.add(vertex)
+                stack.extend(self.get_adj(vertex) - visited)
+        return
+
+    def bfs(self, start=None):
+        visited = set()
+        stack = [start]
+        while stack:
+            vertex = stack.pop(0)
+            yield vertex
+            if vertex not in visited:
+                visited.add(vertex)
+                stack.extend(self.get_adj(vertex) - visited)
+        return
+
+    def bfs_paths(self, start, goal):
+        queue = [(start, [start])]
+        while queue:
+            (vertex, path) = queue.pop(0)
+            for next in self.get_adj(vertex) - set(path):
+                if next == goal:
+                    yield path + [next]
+                else:
+                    queue.append((next, path + [next]))
 
 
 if __name__ == "__main__":
-    edges = [(1, 2), (1, 3), (1, 4), (2, 3), (2, 5)]
+    edges = [('A', 'B'), ('A', 'C'), ('B', 'A'), ('B', 'D'), ('B', 'E'), ('C', 'A'), ('C', 'F'), ('D', 'B'), ('E', 'B'),
+             ('E', 'F'), ('F', 'C'), ('F', 'E')]
     g = Graph(edges)
     print(g.edges)
-
-    print(g.get_adj(1))
-
-    for node in g.dfs(node=1, goal=5):
-        print(node)
+    print('dfs')
+    for vertex in g.dfs(1):
+        print(vertex)
+    print('bfs')
+    for vertex in g.bfs(1):
+        print(vertex)
+    print('bfs_path')
+    for path in g.bfs_paths(1, 5):
+        print(path)
