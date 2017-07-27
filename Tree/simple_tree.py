@@ -107,7 +107,7 @@ class Node:
         """
         yield self
         last = self
-        for node in self.bfs(self):
+        for node in self.bfs(last):
             for child in node.children:
                 yield child
                 last = child
