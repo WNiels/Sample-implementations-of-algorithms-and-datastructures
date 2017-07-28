@@ -68,11 +68,11 @@ if __name__ == "__main__":
     g = Graph(edges)
     print(g.edges)
     print('dfs')
-    for vertex in g.dfs(1):
+    for vertex in g.dfs('A'):
         print(vertex)
     print('bfs')
-    for vertex in g.bfs(1):
+    for vertex in g.bfs('A'):
         print(vertex)
     print('bfs_path')
-    for path in g.bfs_paths(1, 5):
+    for path in g.bfs_paths('A', 'F'):
         print(path)
