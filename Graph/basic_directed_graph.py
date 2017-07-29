@@ -90,6 +90,23 @@ class Graph:
                 self._edges[edge[1]] = set()
             self._edges[edge[0]].add(edge[1])
 
+    def add_vertices(self, vertices=[]):
+        """
+        Adds the given vertices to the graph.
+
+        Parameters
+        ----------
+        vertices : *object
+            Vertices to add to the graph.
+
+        Returns
+        -------
+
+        """
+        for vertex in vertices:
+            if vertex not in self._edges:
+                self._edges[vertex] = set()
+
     def remove_vertices(self, vertices=[]):
         """
         Removes all given vertices from the graph.
@@ -144,6 +161,67 @@ class Graph:
             return self._edges[vertex]
         else:
             return set()
+
+    def get_deg_out(self, vertex=None):
+        """
+        Calculates the out degree of a given vertex.
+
+        The out degree ist the count of edges going out from a given vertex.
+
+        Parameters
+        ----------
+        vertex : object
+            The vertex to calculate the out degree for.
+
+        Returns
+        -------
+        int
+            out degree
+        """
+        return len(self._edges[vertex])
+
+    def get_deg_in(self, vertex=None):
+        """
+        Calculates the in degree of a given vertex.
+
+        The in degree is the count of edges going in to the given vertex.
+
+        Parameters
+        ----------
+        vertex : object
+            The vertex to calculate the in degree for.
+
+        Returns
+        -------
+        int
+            in degree
+
+        """
+        deg = 0
+        for element in self._edges.values():
+            if vertex in element:
+                print(element)
+                deg += 1
+        return deg
+
+    def get_deg(self, vertex=None):
+        """
+        Calculates the degree of a given vertex.
+
+        The degree is the count of edges going in and/or out of the given vertex.
+
+        Parameters
+        ----------
+        vertex : object
+            The vertex to calculate the degree for.
+
+        Returns
+        -------
+        int
+            degree
+
+        """
+        return self.get_deg_in(vertex) + self.get_deg_out(vertex)
 
     def get_isolated(self):
         """
@@ -296,7 +374,11 @@ if __name__ == "__main__":
     print(g.get_vertices())
     print('Isolated')
     g.get_isolated()
-    print('Remove A')
-    g.remove_vertices(['A'])
     print(g.get_vertices())
+    print('DegOut of B '+str(g.get_deg_out('B')))
+    print('DegOut of H '+str(g.get_deg_out('H')))
+    print('DegIn of B '+str(g.get_deg_in('B')))
+    print('DegIn of H '+str(g.get_deg_in('H')))
+    print('Deg of B '+str(g.get_deg('B')))
+    print('Deg of H '+str(g.get_deg('H')))
     print(g._edges)
