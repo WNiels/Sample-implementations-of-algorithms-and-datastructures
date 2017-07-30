@@ -1,4 +1,9 @@
 class Node:
+    """
+    Binary Tree implementation.
+    + The left child nodes key is always smaller then the parents.
+    + The right child nodes key is always greater the the parents.
+    """
     def __init__(self, key, value=None, left=None, right=None):
         """
         Constructor
