@@ -1,10 +1,15 @@
 import math
 
 
+def is_max_heap(max_heap):
+    pass
+
+
 class MaxHeap:
     """
     MaxHeap implementation.
     """
+
     def __init__(self):
         """
         Constructor.
@@ -26,7 +31,7 @@ class MaxHeap:
         """
         return str(self._heap[1:])
 
-    def insert(self, *args):
+    def build_heap(self, *args):
         """
         Ads the given arguments to the heap.
 
@@ -37,7 +42,7 @@ class MaxHeap:
 
         """
         self._heap.extend(args)
-        self.build_max_heap()
+        self._build_max_heap()
 
     @staticmethod
     def left(index):
@@ -95,9 +100,9 @@ class MaxHeap:
             Parent's index.
 
         """
-        return math.floor(index / 2)
+        return int(math.floor(index / 2))
 
-    def max_heapify(self, index):
+    def _max_heapify(self, index):
         """
         Build's local heap for a node and it's childes.
 
@@ -118,10 +123,10 @@ class MaxHeap:
         if r < len(self._heap) and self._heap[r] > self._heap[largest]:
             largest = r
         if largest is not index:
-            self.swap(index, largest)
-            self.max_heapify(largest)
+            self._swap(index, largest)
+            self._max_heapify(largest)
 
-    def build_max_heap(self):
+    def _build_max_heap(self):
         """
         Start's sorting the list to match heap criteria.
 
@@ -133,19 +138,19 @@ class MaxHeap:
         """
         i = math.floor(len(self._heap) / 2)
         while i >= 1:
-            self.max_heapify(i)
+            self._max_heapify(i)
             i -= 1
 
-    def swap(self, first_index, second_index):
+    def _swap(self, first_index, second_index):
         """
         Swaps the position of the objects at the given indexes.
 
         Parameters
         ----------
         first_index : int
-            Index of the first object to swap.
+            Index of the first object to _swap.
         second_index : int
-            Index of the second object to swap.
+            Index of the second object to _swap.
 
         Returns
         -------
@@ -157,19 +162,96 @@ class MaxHeap:
 
     # TODO: Methods to implement in the future.
 
-    def lookup(self, key):
-        pass
+    def increase_key(self, i, new_key):
+        if new_key > self._heap[i]:
+            self._heap[i] = new_key
+            parent = self.parent(i)
+            while i > 0 and parent > 0 and self._heap[i] > self._heap[parent]:
+                self._swap(i, parent)
+                i = parent
+                parent = self.parent(i)
+
+    def insert(self, key):
+        i = len(self._heap)
+        self._heap.insert(i, -1)
+        self.increase_key(i, key)
 
     def extract_max(self):
-        pass
+        """
+        Returns the max key, and removes it from the heap.
 
-    def extract_min(self):
-        pass
+        Returns
+        -------
+        comparable
+            Maximal key.
+        """
+        return self.remove(1)
 
-    # TODO: Unittests.
+    def find_max(self):
+        """
+        Returns the max key, without removing it.
+
+        Returns
+        -------
+        comparable
+            Maximal key
+        """
+        return self._heap[1]
+
+    def delete_max(self):
+        """
+        Deletes the max key.
+
+        Returns
+        -------
+
+        """
+        self.remove(1)
+
+    def remove(self, i):
+        removed = self._heap[i]
+        last_index = self.size() - 1
+        self._swap(i, last_index)
+        self._heap.remove(removed)
+        if i != last_index:
+            if i == 0 or self._heap[i] < self._heap[self.parent(i)]:
+                self._max_heapify(i)
+            else:
+                self.increase_key(i, self._heap[i])
+        return removed
+
+    def size(self):
+        """
+        Returns the number of elements in the heap.
+
+        Returns
+        -------
+        int
+            Number of elements in the heap.
+        """
+        return len(self._heap)
+
+    def is_empty(self):
+        """
+        Returns weather the heap is empty or not.
+
+        Returns
+        -------
+        bool
+            True if empty, False if not.
+        """
+        return self.size() < 1
+
+        # TODO: Unittests.
 
 
 if __name__ == '__main__':
     max_heap = MaxHeap()
-    max_heap.insert(8, 2, 3, 9, 7, 1, 10, 16, 4, 14)
+    max_heap.build_heap(8, 2, 3, 9, 7, 1, 10, 16, 4, 14)
+    print(max_heap)
+    max_heap.increase_key(6, 15)
+    print(max_heap)
+    max_heap.insert(12)
+    print(max_heap)
+    max_heap.delete_max()
     print(max_heap)
