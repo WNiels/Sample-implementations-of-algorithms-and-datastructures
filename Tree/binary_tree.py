@@ -118,6 +118,32 @@ class Node:
         self._right = right
 
     @property
+    def parent(self):
+        """
+        Returns the parent property's value.
+
+        Returns
+        -------
+        Node
+            The parent Node.
+
+        """
+        return self._parent
+
+    @parent.setter
+    def parent(self, parent):
+        """
+        Sets the parent property.
+
+        Parameters
+        ----------
+        parent : Node
+            Node to set as parent.
+
+        """
+        self._parent = parent
+
+    @property
     def value(self):
         """
         Getter for the nodes value.
@@ -180,84 +206,72 @@ class Node:
             Key of the Node to be deleted.
 
         """
-        node_to_delete, parent = self.lookup(key)
-        if node_to_delete:
-            if node_to_delete.left and node_to_delete.right:
-                successor_parent = node_to_delete
-                successor = node_to_delete.right
-                while successor.left:
-                    successor_parent = successor
-                    successor = successor.left
-                node_to_delete.value = successor.value
-                node_to_delete.key = successor.key
-                if successor_parent.left is successor:
-                    successor_parent.left = successor.right
-                else:
-                    successor_parent.right = successor.right
-            elif node_to_delete.left:
-                if parent:
-                    if parent.left is node_to_delete:
-                        parent.left = node_to_delete.left
+        n = self.lookup(key)
+        if n:
+            if n.left and n.right:
+                y = n.successor()
+                self.delete(y.key)
+                n.key = y.key
+                n.value = y.value
+            elif n.left:
+                if n.parent:
+                    n.left.parent = n.parent
+                    if n.parent.left is n:
+                        n.parent.left = n.left
                     else:
-                        parent.right = node_to_delete.left
+                        n.parent.right = n.left
                 else:
-                    node_to_delete.key = node_to_delete.left.key
-                    node_to_delete.value = node_to_delete.left.value
-                    node_to_delete.right = node_to_delete.left.right
-                    node_to_delete.left = node_to_delete.left.left
-            elif node_to_delete.right:
-                if parent:
-                    if parent.left is node_to_delete:
-                        parent.left = node_to_delete.right
+                    n.key = n.left.key
+                    n.value = n.left.value
+                    n.left = n.left.left
+                    n.right = n.left.right
+            elif n.right:
+                if n.parent:
+                    n.right.parent = n.parent
+                    if n.parent.left is n:
+                        n.parent.left = n.right
                     else:
-                        parent.right = node_to_delete.right
+                        n.parent.right = n.right
                 else:
-                    node_to_delete.key = node_to_delete.right.key
-                    node_to_delete.value = node_to_delete.right.value
-                    node_to_delete.left = node_to_delete.right.left
-                    node_to_delete.right = node_to_delete.right.right
+                    n.key = n.right.key
+                    n.value = n.right.value
+                    n.left = n.right.left
+                    n.right = n.right.right
             else:
-                if parent:
-                    if parent.left is node_to_delete:
-                        parent.left = None
+                if n.parent:
+                    if n.parent.left is n:
+                        n.parent.left = None
                     else:
-                        parent.right = None
-                else:
-                    del node_to_delete
+                        n.parent.right = None
 
-    # TODO: Only return the Node, it's parent should be retrieved via attr.
-    def lookup(self, key, parent=None):
+    def lookup(self, key):
         """
-        Returns a Node and it's parent (if present) by a given key.
+        Returns the Node with the given key.
 
         Parameters
         ----------
         key : value comparable by >,<,==
             Key of the Node to return.
-        parent : Node
-            Used vor recursion!
-            Parent Node of the current Node looked at.
 
         Returns
         -------
-        (Node, Node)
-            The Node matching the given key as first and it's parent Node as second parameter.
+        Node
+            The Node matching the given key.
 
         """
         if key == self.key:
-            return self, parent
+            return self
         elif key < self.key:
             if self.left:
-                return self.left.lookup(key, self)
+                return self.left.lookup(key)
             else:
-                return None, None
+                return None
         else:
             if self.right:
-                return self.right.lookup(key, self)
+                return self.right.lookup(key)
             else:
-                return None, None
+                return None
 
-    # TODO: Use parent attr.
     def insert(self, key, value=None):
         """
         Inserts a given key value pair as Node into the tree.
@@ -276,21 +290,88 @@ class Node:
             self.value = value
         elif self.key > key:
             if self.left is None:
-                self.left = Node(value=value, key=key)
+                self.left = Node(value=value, key=key, parent=self)
             else:
                 self.left.insert(value=value, key=key)
         elif self.key < key:
             if self.right is None:
-                self.right = Node(value=value, key=key)
+                self.right = Node(value=value, key=key, parent=self)
             else:
                 self.right.insert(value=value, key=key)
 
-    # TODO: Methods to implement in teh future:
     def get_min(self):
-        pass
+        """
+        Gets the Node with the minimal key in this tree.
+
+        EG. gets the outermost left leaf of this tree.
+
+        Returns
+        -------
+        Node
+            Node with minimal key.
+
+        """
+        min_node = self
+        while min_node.left:
+            min_node = min_node.left
+        return min_node
 
     def get_max(self):
-        pass
+        """
+        Gets the Node with the maximal key in this tree.
+
+        Eg. gets the outermost right leaf of this tree.
+
+        Returns
+        -------
+        Node
+            Node with maximal key.
+
+        """
+        max_node = self
+        while max_node.right:
+            max_node = max_node.right
+        return max_node
+
+    def successor(self):
+        """
+        Gets the Node with the next higher key.
+
+        Returns
+        -------
+        Node
+            Node with next higher key.
+
+        """
+        n = self
+        if n.right:
+            return n.right.get_min()
+        p = n.parent
+        while p and n is p.right:
+            n = p
+            p = p.parent
+        return p
+
+    def predecessor(self):
+        """
+        Gets the Node with the next lower key.
+
+        Returns
+        -------
+        Node
+            Node with the next lower key.
+
+        """
+        n = self
+        if n.left:
+            return n.left.get_max()
+        p = n.parent
+        while p and n is p.left:
+            n = p
+            p = p.parent
+        return p
+
+    # TODO: Methods to implement in teh future:
 
     def get_leafs(self):
         pass
@@ -299,12 +380,6 @@ class Node:
         pass
 
     def max_depth(self):
-        pass
-
-    def successor(self):
-        pass
-
-    def predecessor(self):
         pass
 
     def merge_with_binary_tree(self, binary_tree):
