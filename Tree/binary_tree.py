@@ -4,7 +4,7 @@ class Node:
     + The left child nodes key is always smaller then the parents.
     + The right child nodes key is always greater the the parents.
     """
-    def __init__(self, key, value=None, left=None, right=None):
+    def __init__(self, key, value=None, parent=None, left=None, right=None):
         """
         Constructor
 
@@ -17,6 +17,8 @@ class Node:
             Value by which the nodes are ordered inside the tree.
         value : object
             Object to be stored in this node.
+        parent : Node
+            Parent node.
         left : Node
             Left child node.
         right : Node
@@ -24,6 +26,7 @@ class Node:
         """
         self._left = left
         self._right = right
+        self._parent = parent
         self._value = value
         self._key = key
 
@@ -166,6 +169,7 @@ class Node:
         """
         self._key = key
 
+    # TODO: Use parent attr.
     def delete(self, key):
         """
         Finds and deletes a node by the given key from the tree.
@@ -221,6 +225,7 @@ class Node:
                 else:
                     del node_to_delete
 
+    # TODO: Only return the Node, it's parent should be retrieved via attr.
     def lookup(self, key, parent=None):
         """
         Returns a Node and it's parent (if present) by a given key.
@@ -252,6 +257,7 @@ class Node:
             else:
                 return None, None
 
+    # TODO: Use parent attr.
     def insert(self, key, value=None):
         """
         Inserts a given key value pair as Node into the tree.
@@ -279,6 +285,30 @@ class Node:
             else:
                 self.right.insert(value=value, key=key)
 
+    # TODO: Methods to implement in teh future:
+    def get_min(self):
+        pass
+
+    def get_max(self):
+        pass
+
+    def get_leafs(self):
+        pass
+
+    def min_depth(self):
+        pass
+
+    def max_depth(self):
+        pass
+
+    def successor(self):
+        pass
+
+    def predecessor(self):
+        pass
+
+    def merge_with_binary_tree(self, binary_tree):
+        pass
 
 if __name__ == '__main__':
     root = Node(8)
