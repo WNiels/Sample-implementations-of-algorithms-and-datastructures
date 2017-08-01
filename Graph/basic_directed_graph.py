@@ -251,7 +251,7 @@ class Graph:
         Parameters
         ----------
         start : object
-            Node to start dfs from.
+            BinaryTreeNode to start dfs from.
 
         Returns
         -------
@@ -306,7 +306,7 @@ class Graph:
         Parameters
         ----------
         start : object
-            Node to start bfs from.
+            BinaryTreeNode to start bfs from.
 
         Returns
         -------

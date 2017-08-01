@@ -1,9 +1,9 @@
 import math
 
 
-class MaxHeap:
+class MaxBinaryHeap:
     """
-    MaxHeap implementation.
+    MaxBinaryHeap implementation.
     """
 
     def __init__(self):
@@ -240,7 +240,7 @@ class MaxHeap:
 
 
 if __name__ == '__main__':
-    max_heap = MaxHeap()
+    max_heap = MaxBinaryHeap()
     max_heap.build_heap(8, 2, 3, 9, 7, 1, 10, 16, 4, 14)
     print('Build:           ', max_heap)
     max_heap.increase_key(6, 15)

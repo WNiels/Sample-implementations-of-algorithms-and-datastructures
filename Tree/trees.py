@@ -1,4 +1,15 @@
-class Node:
+class IndexedBinaryTree:
+    def __init__(self):
+        self._index = []
+
+    pass
+
+
+class Tree:
+    pass
+
+
+class BinaryTreeNode:
     """
     Binary Tree implementation.
     + The left child nodes key is always smaller then the parents.
@@ -17,11 +28,11 @@ class Node:
             Value by which the nodes are ordered inside the tree.
         value : object
             Object to be stored in this node.
-        parent : Node
+        parent : BinaryTreeNode
             Parent node.
-        left : Node
+        left : BinaryTreeNode
             Left child node.
-        right : Node
+        right : BinaryTreeNode
             Right child node.
         """
         self._left = left
@@ -36,8 +47,8 @@ class Node:
 
         Parameters
         ----------
-        other : Node
-            Node to compare this Node to.
+        other : BinaryTreeNode
+            TreeNode to compare this TreeNode to.
 
         Returns
         -------
@@ -52,7 +63,7 @@ class Node:
 
     def __iter__(self):
         """
-        Iterator returning this Node and it's child Nodes in order of their keys.
+        Iterator returning this BinaryTreeNode and it's child Nodes in order of their keys.
 
         Returns
         -------
@@ -72,8 +83,8 @@ class Node:
 
         Returns
         -------
-        Node
-            Left child of this Node.
+        BinaryTreeNode
+            Left child of this TreeNode.
 
         """
         return self._left
@@ -85,7 +96,7 @@ class Node:
 
         Parameters
         ----------
-        left : Node
+        left : BinaryTreeNode
             Value to set as left child.
 
         """
@@ -98,8 +109,8 @@ class Node:
 
         Returns
         -------
-        Node
-            Right child of this Node.
+        BinaryTreeNode
+            Right child of this TreeNode.
 
         """
         return self._right
@@ -111,7 +122,7 @@ class Node:
 
         Parameters
         ----------
-        right : Node
+        right : BinaryTreeNode
             Value to set as right child.
 
         """
@@ -124,8 +135,8 @@ class Node:
 
         Returns
         -------
-        Node
-            The parent Node.
+        BinaryTreeNode
+            The parent TreeNode.
 
         """
         return self._parent
@@ -137,8 +148,8 @@ class Node:
 
         Parameters
         ----------
-        parent : Node
-            Node to set as parent.
+        parent : BinaryTreeNode
+            TreeNode to set as parent.
 
         """
         self._parent = parent
@@ -203,7 +214,7 @@ class Node:
         Parameters
         ----------
         key : value comparable by >,<,==
-            Key of the Node to be deleted.
+            Key of the BinaryTreeNode to be deleted.
 
         """
         n = self.lookup(key)
@@ -246,17 +257,17 @@ class Node:
 
     def lookup(self, key):
         """
-        Returns the Node with the given key.
+        Returns the TreeNode with the given key.
 
         Parameters
         ----------
         key : value comparable by >,<,==
-            Key of the Node to return.
+            Key of the TreeNode to return.
 
         Returns
         -------
-        Node
-            The Node matching the given key.
+        BinaryTreeNode
+            The TreeNode matching the given key.
 
         """
         if key == self.key:
@@ -274,13 +285,13 @@ class Node:
 
     def insert(self, key, value=None):
         """
-        Inserts a given key value pair as Node into the tree.
-        Overriding any Node with the same key!
+        Inserts a given key value pair as BinaryTreeNode into the tree.
+        Overriding any BinaryTreeNode with the same key!
 
         Parameters
         ----------
         key : value comparable by >,<,==
-            Key to insert the Node (value) by.
+            Key to insert the BinaryTreeNode (value) by.
 
         value : object
             Object to be stored in the tree.
@@ -290,25 +301,25 @@ class Node:
             self.value = value
         elif self.key > key:
             if self.left is None:
-                self.left = Node(value=value, key=key, parent=self)
+                self.left = BinaryTreeNode(value=value, key=key, parent=self)
             else:
                 self.left.insert(value=value, key=key)
         elif self.key < key:
             if self.right is None:
-                self.right = Node(value=value, key=key, parent=self)
+                self.right = BinaryTreeNode(value=value, key=key, parent=self)
             else:
                 self.right.insert(value=value, key=key)
 
     def get_min(self):
         """
-        Gets the Node with the minimal key in this tree.
+        Gets the TreeNode with the minimal key in this tree.
 
         EG. gets the outermost left leaf of this tree.
 
         Returns
         -------
-        Node
-            Node with minimal key.
+        BinaryTreeNode
+            TreeNode with minimal key.
 
         """
         min_node = self
@@ -318,14 +329,14 @@ class Node:
 
     def get_max(self):
         """
-        Gets the Node with the maximal key in this tree.
+        Gets the TreeNode with the maximal key in this tree.
 
         Eg. gets the outermost right leaf of this tree.
 
         Returns
         -------
-        Node
-            Node with maximal key.
+        BinaryTreeNode
+            TreeNode with maximal key.
 
         """
         max_node = self
@@ -335,12 +346,12 @@ class Node:
 
     def successor(self):
         """
-        Gets the Node with the next higher key.
+        Gets the TreeNode with the next higher key.
 
         Returns
         -------
-        Node
-            Node with next higher key.
+        BinaryTreeNode
+            TreeNode with next higher key.
 
         """
         n = self
@@ -354,12 +365,12 @@ class Node:
 
     def predecessor(self):
         """
-        Gets the Node with the next lower key.
+        Gets the TreeNode with the next lower key.
 
         Returns
         -------
-        Node
-            Node with the next lower key.
+        BinaryTreeNode
+            TreeNode with the next lower key.
 
         """
         n = self
@@ -385,26 +396,150 @@ class Node:
     def merge_with_binary_tree(self, binary_tree):
         pass
 
-if __name__ == '__main__':
-    root = Node(8)
-    root.insert(3)
-    root.insert(1)
-    root.insert(4)
-    root.insert(6)
-    root.insert(7)
-    root.insert(10)
-    root.insert(13)
-    root.insert(14)
 
-    root2 = root
+class TreeNode:
+    """
+    Representing a node of a tree holding a value and it's child nodes.
+    """
+    __slots__ = ['_elements']
 
-    print(root == root2)
-    print(root == root2.right)
-    root2.delete(10)
-    root2.delete(1)
-    root2.delete(20)
+    def __init__(self, val, *children):
+        """
+        Constructor.
 
-    for node in root:
-        print(node.key)
-    for node in root2:
-        print(node.key)
+        Parameters
+        ----------
+        val : object
+            A user chosen value to be stored in this BinaryTreeNode.
+        children : TreeNode
+            Child nodes of this node.
+
+        """
+        self._elements = [val] + list(children)
+
+    @property
+    def children(self):
+        """
+        Gets the child nodes.
+
+        Returns
+        -------
+            *BinaryTreeNode
+                List of child nodes.
+
+        """
+        return self._elements[1:]
+
+    @children.setter
+    def children(self, *children):
+        """
+        Sets the child nodes, deleting any current child nodes.
+
+        Parameters
+        ----------
+        children : TreeNode
+            Nodes to be added as child's.
+
+        Returns
+        -------
+
+        """
+        self._elements = self._elements[:1] + list(children)
+
+    @children.deleter
+    def children(self):
+        """
+        Removes any child node from this node.
+
+        Returns
+        -------
+
+        """
+        self._elements = self._elements[:1]
+
+    @property
+    def value(self):
+        """
+        Returns the value held by this node.
+
+        Returns
+        -------
+        object
+            Value held by this node.
+
+        """
+        return self._elements[0]
+
+    def __repr__(self):
+        """
+        String representation of this node.
+
+        Returns
+        -------
+        str
+            String representation of this node.
+
+        """
+        return "<{}: {} :: {} child nodes>".format(self.__class__.__name__, self.value, len(self.children))
+
+    def dfs(self):
+        """
+        Iterator of this tree in depth-first-search order.
+
+        Returns
+        -------
+        iterator
+            Iterator for this tree in dfs order.
+        """
+        yield self
+        for child in self.children:
+            yield from child
+
+    def bfs(self, node=None):
+        """
+        Iterator of this tree in breadth-first-search order.
+
+        Returns
+        -------
+        iterator
+            Iterator for this tree in bfs order.
+        """
+        yield self
+        last = self
+        for node in self.bfs(last):
+            for child in node.children:
+                yield child
+                last = child
+            if last == node:
+                return
+
+    def reverse_bfs(self):
+        """
+        Iterator of this tree in bottom-up (reversed breadth-first-search) order.
+
+        Returns
+        -------
+        iterator
+            Iterator for this tree in bottom-up order.
+        """
+        result = list()
+        for node in self.bfs():
+            result.append(node)
+        result.reverse()
+        return result
+
+    def __iter__(self):
+        """
+        Iterator of this tree in depth-first-search order.
+        @bfs()
+
+        Returns
+        -------
+        iterator
+            Iterator for this tree in dfs order.
+        """
+        return self.dfs()
+
+    def values(self):
+        for node in self:
+            yield node.value

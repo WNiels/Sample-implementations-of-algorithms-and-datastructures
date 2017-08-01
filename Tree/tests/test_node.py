@@ -1,35 +1,35 @@
 from unittest import TestCase
-from Tree.binary_tree import Node
+from Tree.trees import BinaryTreeNode
 
 
 class TestNode(TestCase):
     def test_left(self):
-        self.assertEqual(Node(0).left, None)
-        left_node = Node(1)
-        node_with_left_child = Node(0, left=left_node)
+        self.assertEqual(BinaryTreeNode(0).left, None)
+        left_node = BinaryTreeNode(1)
+        node_with_left_child = BinaryTreeNode(0, left=left_node)
         self.assertEqual(node_with_left_child.left, left_node)
 
     def test_right(self):
-        self.assertEqual(Node(0).right, None)
-        right_node = Node(1)
-        node_with_right_child = Node(0, right=right_node)
+        self.assertEqual(BinaryTreeNode(0).right, None)
+        right_node = BinaryTreeNode(1)
+        node_with_right_child = BinaryTreeNode(0, right=right_node)
         self.assertEqual(node_with_right_child.right, right_node)
 
     def test_value(self):
-        self.assertEqual(Node(0).value, None)
-        self.assertEqual(Node(0, 'Test').value, 'Test')
-        self.assertNotEqual(Node(0, 'Test').value, None)
-        self.assertNotEqual(Node(0, 'Test').value, 'Bla')
-        self.assertNotEqual(Node(0, None).value, 'Test')
+        self.assertEqual(BinaryTreeNode(0).value, None)
+        self.assertEqual(BinaryTreeNode(0, 'Test').value, 'Test')
+        self.assertNotEqual(BinaryTreeNode(0, 'Test').value, None)
+        self.assertNotEqual(BinaryTreeNode(0, 'Test').value, 'Bla')
+        self.assertNotEqual(BinaryTreeNode(0, None).value, 'Test')
 
     def test_key(self):
-        self.assertEqual(Node(0), Node(0))
-        self.assertEqual(Node(0).key, 0)
-        self.assertNotEqual(Node(0), Node(1))
-        self.assertNotEqual(Node(0).key, 1)
+        self.assertEqual(BinaryTreeNode(0), BinaryTreeNode(0))
+        self.assertEqual(BinaryTreeNode(0).key, 0)
+        self.assertNotEqual(BinaryTreeNode(0), BinaryTreeNode(1))
+        self.assertNotEqual(BinaryTreeNode(0).key, 1)
 
     def test_delete(self):
-        root = Node(8)
+        root = BinaryTreeNode(8)
         root.insert(3)
         root.insert(10)
         root.delete(10)
@@ -43,7 +43,7 @@ class TestNode(TestCase):
         self.assertEqual(root.left.key, 3)
         self.assertEqual(root.right, None)
 
-        root = Node(8)
+        root = BinaryTreeNode(8)
         root.insert(3)
         root.insert(1)
         root.insert(4)
@@ -61,7 +61,7 @@ class TestNode(TestCase):
         self.assertEqual(parent.left.key, 1)
 
     def test_lookup(self):
-        root = Node(8)
+        root = BinaryTreeNode(8)
         root.insert(3)
         root.insert(1)
         root.insert(4)
@@ -77,7 +77,7 @@ class TestNode(TestCase):
         self.assertEqual(root.lookup(92), (None, None))
 
     def test_insert(self):
-        root = Node(8)
+        root = BinaryTreeNode(8)
         root.insert(3)
         self.assertEqual(root.left.key, 3)
         self.assertEqual(root.right, None)
