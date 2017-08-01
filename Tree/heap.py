@@ -156,8 +156,6 @@ class MaxHeap:
         self._heap[first_index] = self._heap[second_index]
         self._heap[second_index] = first_node
 
-    # TODO: Methods to implement in the future.
-
     def increase_key(self, i, new_key):
         if new_key > self._heap[i]:
             self._heap[i] = new_key
