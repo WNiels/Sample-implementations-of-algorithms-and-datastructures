@@ -1,10 +1,6 @@
 import math
 
 
-def is_max_heap(max_heap):
-    pass
-
-
 class MaxHeap:
     """
     MaxHeap implementation.
@@ -16,7 +12,7 @@ class MaxHeap:
 
         Initializes the list, backing up the heap.
         """
-        self._heap = [None]
+        self._heap = [0]
 
     def __str__(self):
         """
@@ -214,7 +210,7 @@ class MaxHeap:
         self._swap(i, last_index)
         self._heap.remove(removed)
         if i != last_index:
-            if i == 0 or self._heap[i] < self._heap[self.parent(i)]:
+            if i == 1 or self._heap[i] < self._heap[self.parent(i)]:
                 self._max_heapify(i)
             else:
                 self.increase_key(i, self._heap[i])
@@ -248,10 +244,10 @@ class MaxHeap:
 if __name__ == '__main__':
     max_heap = MaxHeap()
     max_heap.build_heap(8, 2, 3, 9, 7, 1, 10, 16, 4, 14)
-    print(max_heap)
+    print('Build:           ', max_heap)
     max_heap.increase_key(6, 15)
-    print(max_heap)
+    print('Increase key 6:  ', max_heap)
     max_heap.insert(12)
-    print(max_heap)
+    print('Insert 12:       ', max_heap)
     max_heap.delete_max()
-    print(max_heap)
+    print('Delete max:      ', max_heap)
