@@ -2,7 +2,8 @@ class IndexedBinaryTree:
     def __init__(self):
         self._index = []
 
-    pass
+    def add_node(self, key, value):
+        pass
 
 
 class Tree:
